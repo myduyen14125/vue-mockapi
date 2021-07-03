@@ -6,7 +6,7 @@
       <h1 style="text-align: center">{{user.name}}</h1>
       <div class="edit-profile">
         <button class="big-edit" @click="editProfile">Edit Profile</button>
-        <div class="menu-edit" id="menu-edit">
+        <div class="menu-edit" v-bind:class="{showMenuEdit: availableMenuEdit}">
           <button @click="editName">Edit Username</button>
           <button @click="editPhone">Edit Phone Number</button>
           <button @click="deleteUser(user.id)">Delete Account</button>
@@ -15,7 +15,7 @@
         </div>
       </div>
       
-      <div id="edit-modal" class="edit-modal">
+      <div class="edit-modal" v-bind:class="{showModal: availableModal}">
         <div class="modal-content">
           <h3>Edit your information below here !</h3>
           <hr>
@@ -57,7 +57,9 @@ export default {
     return {
       user: {},
       currentInput: null,
-      edit: ''
+      edit: '',
+      availableModal: false,
+      availableMenuEdit: false
     }
     
   },
@@ -68,22 +70,23 @@ export default {
   },
   methods: {
     editProfile(){
-      document.getElementById('menu-edit').style.display = "block";
+      this.availableMenuEdit = true
     },
     editName(){
       this.edit = 'name';
-      document.getElementById('edit-modal').style.display = "block";
-      document.getElementById('menu-edit').style.display = "none";
+      this.availableModal = true
+      this.availableMenuEdit = false
       //Instead of using JS, can also v-bind:class for element, then active the class true/false.
     },
     editPhone(){
       this.edit = 'phone';
-      document.getElementById('edit-modal').style.display = "block";
-      document.getElementById('menu-edit').style.display = "none";
+      this.availableModal = true
+      this.availableMenuEdit = false
     },
     successEdit(id){
       if(this.edit === 'name'){
-        axios.put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
+        axios
+        .put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
         {
           name: this.currentInput,
         })
@@ -101,13 +104,13 @@ export default {
         this.user.phoneNumber = this.currentInput
       }
       this.currentInput = ''
-      document.getElementById('edit-modal').style.display = "none";
+      this.availableModal = false
     },
     cancelEdit(){
-      document.getElementById('menu-edit').style.display = "none";
+      this.availableMenuEdit = false
     },
     cancelModal(){
-      document.getElementById('edit-modal').style.display = "none";
+      this.availableModal = false
     },
     deleteUser(id){
       alert('You decide to delete !')
@@ -181,6 +184,9 @@ button:hover{
     transition: 0.3s;
     box-shadow: 3px 4px 10px -5px rgba(0,0,0,0.71);
   }
+  .showMenuEdit{
+    display: block;
+  }
     .menu-edit button{
       width: 100%;
       text-align: left;
@@ -196,6 +202,9 @@ button:hover{
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+}
+.showModal {
+  display: block;
 }
   .modal-content{
     margin: 12% auto;
