@@ -76,32 +76,39 @@ export default {
       this.edit = 'name';
       this.availableModal = true
       this.availableMenuEdit = false
-      //Instead of using JS, can also v-bind:class for element, then active the class true/false.
     },
     editPhone(){
       this.edit = 'phone';
       this.availableModal = true
       this.availableMenuEdit = false
     },
-    successEdit(id){
+    async successEdit(id){
+      const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
       if(this.edit === 'name'){
-        axios
+        await axios
         .put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
-        {
-          name: this.currentInput,
+          {
+            name: this.currentInput,
+          })
+        .then(function (response){
+          alert('Success Updated!')
+          // location.reload();
+          console.log(response)
         })
-        this.user.name = this.currentInput
-        // Another solution, use async await but it a little slower so I comment here, hehe. 
-        // const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
-        // console.log(response)
-        // this.user.name = response.data.name
+        .catch(function (error){
+          console.log(error)
+          alert('Error !')
+        })
+        this.user = response.data
+        console.log(this.user)
       }
       if(this.edit === 'phone'){
-        axios.put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
+        await axios.put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
         {
           phoneNumber: this.currentInput,
         })
         this.user.phoneNumber = this.currentInput
+        //Another way for a faster user experience
       }
       this.currentInput = ''
       this.availableModal = false
@@ -112,10 +119,19 @@ export default {
     cancelModal(){
       this.availableModal = false
     },
-    deleteUser(id){
-      alert('You decide to delete !')
-      axios.delete(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
-      this.$router.push(`/users`)
+    async deleteUser(id){
+      await axios
+      .delete(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
+      .then(function(response){
+        alert('You decide to delete!')
+        console.log(response)
+        console.log('Success')
+      })
+      .catch(function (error) {
+        console.log(error)
+        alert('Error !')
+      });
+      this.$router.push(`/users`);
     }
   }
 };

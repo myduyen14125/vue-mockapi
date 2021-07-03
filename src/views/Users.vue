@@ -1,7 +1,9 @@
 <template>
   <div class="users">
     <h1>Lists of users</h1>
-    
+    <h4>Want to become an user?
+      <router-link to="/register">Click here</router-link>
+    </h4>
     <template v-for="user in users">
       <div class="user-container" :key="'user-'+user.id" @click="getUser(user.id)">
         <img class="photo" :src="user.avatar" alt="#">

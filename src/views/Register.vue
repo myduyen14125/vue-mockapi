@@ -43,13 +43,12 @@ export default ({
     }
   },
   methods: {
-    postUser: function(){
-      axios.post('https://60d94868eec56d001747768f.mockapi.io/v1/users', {
+    async postUser() {
+      await axios.post('https://60d94868eec56d001747768f.mockapi.io/v1/users', {
         name: this.name,
         phoneNumber: this.phoneNumber
       });
-      console.log(this.name)
-      console.log(this.phoneNumber)
+      
       alert('You have successfully registered !')
       this.$router.push(`/users`)
     }
