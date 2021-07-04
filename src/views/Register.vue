@@ -2,11 +2,17 @@
   <div class="register">
     <div class="register-container">
       <h1>Register</h1>
-      <Logo/>
-      <p>Register to be our members and enjoy with us!</p>
+      
       <form action=""  v-on:submit.prevent="postUser">
+        <p style="text-align: left">* Create new account</p>
+        <input type="text" placeholder="Username" required v-model="username">
+        <input type="password" placeholder="Password" minlength="6" required v-model="password">
+        <span style="color: red" v-bind:class="{strongPassword}">Password needs at least 6 characters</span>
+
+        <p style="text-align: left">* Personal information</p>
         <input type="text" placeholder="Fullname" required v-model="name">
         <input type="text" placeholder="Phone Number" required v-model="phoneNumber">
+
         <div class="more">
           <div class="checkbox">
             <input type="checkbox" required>
@@ -15,9 +21,10 @@
         </div>
       <button>Register</button>
       </form>
-      <div class="need-account">
-        <p>Need help? </p>
-        <router-link to="/login">Click here</router-link>
+
+      <div class="redirect-box">
+        <p>Have an account? </p>
+        <router-link to="/login">Login here</router-link>
       </div>
     </div>
   </div>
@@ -26,11 +33,10 @@
 
 <script>
 import axios from 'axios'
-import Logo from '../components/uncommon/Logo.vue'
 export default ({
   name: 'Register',
   components: {
-    Logo, 
+  
   },
   created() {
     console.log(this.$route)
@@ -38,21 +44,35 @@ export default ({
   ,
   data() {
     return {
+      username: '',
+      password: '',
       name: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      strongPassword: true,
     }
   },
   methods: {
+    checkPasswd(){
+      if(this.password.length < 6){
+        this.strongPassword == false
+      }
+    },
     async postUser() {
       await axios.post('https://60d94868eec56d001747768f.mockapi.io/v1/users', {
+        username: this.username,
+        password: this.password,
         name: this.name,
-        phoneNumber: this.phoneNumber
+        phoneNumber: this.phoneNumber,
+        
       });
-      
       alert('You have successfully registered !')
       this.$router.push(`/users`)
     }
   },
+  
+  checkAccount(){
+
+  }
   
 })
 </script>
@@ -69,6 +89,7 @@ a:active{
 a:hover{
     border-bottom: 1px solid #2c3e50;
 }
+
 .register{
   display: flex;
   justify-content: center;
@@ -85,7 +106,7 @@ a:hover{
 }
 input{
   display: block;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
   background-color: #f3f3f3;
   color: #2c3e50;
@@ -131,11 +152,17 @@ input[type="checkbox"]{
   margin: 10px;
 }
 
-.need-account{
+.redirect-box{
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
+/* Dynamic css */
+.strongPassword{
+  display: none;
+}
+
 @media screen and (max-width: 1140px) {
   .content{
     font-size: 0.9rem;

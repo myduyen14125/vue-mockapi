@@ -2,19 +2,18 @@
   <div class="user-detail">
     <!-- <h1>{{$route.params.id}}</h1> -->
     <div class="cover">
-      <img :src="user.avatar" alt="">
-      <h1 style="text-align: center">{{user.name}}</h1>
+      <Author v-bind:user='user'/>
       <div class="edit-profile">
         <button class="big-edit" @click="editProfile">Edit Profile</button>
         <div class="menu-edit" v-bind:class="{showMenuEdit: availableMenuEdit}">
-          <button @click="editName">Edit Username</button>
+          <button @click="editName">Edit Your Name</button>
           <button @click="editPhone">Edit Phone Number</button>
           <button @click="deleteUser(user.id)">Delete Account</button>
           <hr style="margin: 1px">
           <button @click="cancelEdit">Cancel</button>
         </div>
-      </div>
-      
+      </div>     
+
       <div class="edit-modal" v-bind:class="{showModal: availableModal}">
         <div class="modal-content">
           <h3>Edit your information below here !</h3>
@@ -29,17 +28,11 @@
       </div>
     </div>
     
-    <div class="container">
-      <div style="text-align: center; font-size: 1.2rem; margin-bottom: 50px">
-        | <em style="color: gray;">Time join in: {{user.createdAt}}</em> | <br><br>
-        <em><strong>Phone number: {{user.phoneNumber}}</strong></em>
-      </div>    
-        
+    <div class="container">      
+      <p>{{user.information}}</p><br>
+      <p>{{user.information}}</p><br>
+      <p>{{user.information}}</p><br>
       
-      <p>{{user.information}}</p><br>
-      <p>{{user.information}}</p><br>
-      <p>{{user.information}}</p><br>
-      <Author/>
     </div>
     
   </div>
@@ -83,7 +76,6 @@ export default {
       this.availableMenuEdit = false
     },
     async successEdit(id){
-      const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
       if(this.edit === 'name'){
         await axios
         .put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
@@ -92,21 +84,25 @@ export default {
           })
         .then(function (response){
           alert('Success Updated!')
+          // const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
           // location.reload();
           console.log(response)
+          console.log(response.data)
         })
         .catch(function (error){
           console.log(error)
           alert('Error !')
         })
+        const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
+        console.log(response.data)
         this.user = response.data
-        console.log(this.user)
       }
       if(this.edit === 'phone'){
         await axios.put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
         {
           phoneNumber: this.currentInput,
         })
+        alert('Success Updated!')
         this.user.phoneNumber = this.currentInput
         //Another way for a faster user experience
       }
@@ -140,14 +136,7 @@ export default {
 <style scoped>
 .user-detail{
   margin: 0;
-  min-height: 40vh;
-}
-.user-detail img{
-  width: 70%; 
-  height: 93%;
-  object-fit: cover;
-  position: relative;
-  border-radius: 10px;
+  min-height: 30vh;
 }
 .container{
   width: 55%;
@@ -165,28 +154,31 @@ button{
   cursor: pointer;
 }
 button:hover{
-  background-color: #f2f2f2;
+  background-color: #1e2731;
+  color: white;
 }
 .cover{
   position: relative;
   padding: 0;
-  height: 65vh;
-  background: linear-gradient(180deg, #dddddd, white);
+  height: 50vh;
+  background: linear-gradient(180deg, #f2f2f2, #ffffff);
   padding-bottom: 50px;
   box-sizing: border-box;
   box-shadow: 3px 3px 5px -4px rgba(0,0,0,0.71);
 }
+.author{
+  margin: auto;
+}
 .edit-profile{
   position: absolute;
-  top: 70%;
-  right: 18%;
+  top: 83%;
+  right: calc(50% - 230px /2);
   width: 230px;
-  text-align: right;
   padding: 0;
 }
   .big-edit{
     width: 150px;
-    margin: 0;
+    margin: auto;
     border: 1px solid gray;
   }
   .menu-edit{

@@ -6,11 +6,13 @@
     </h4>
     <template v-for="user in users">
       <div class="user-container" :key="'user-'+user.id" @click="getUser(user.id)">
+        
         <img class="photo" :src="user.avatar" alt="#">
         <div class="content">
-          <h2 style="text-transform: uppercase">{{ user.name }}</h2>
-          <em class="time" style="color: gray">Time join in: {{ user.createdAt }}</em>
-          <h3 class="phone">Phone number: {{ user.phoneNumber }}</h3>
+          <h2 style="margin-bottom: 2px">{{ user.name }}</h2>
+          <em class="username" style="margin-bottom: 15px; display: block">@{{ user.username }}</em>
+          <em class="" style="color: gray">Quote: {{ user.description }}</em>
+          <h4 class="phone">Phone number: {{ user.phoneNumber }}</h4>
         </div>
       </div>
     </template>
@@ -68,8 +70,8 @@ export default ({
   box-shadow: 5px 8px 10px -5px rgba(0,0,0,0.71);
 }
   img.photo{
-    width: 250px;
-    height: 180px;
+    min-width: 250px;
+    min-height: 180px;
     object-fit: cover;
   }
   .content{
@@ -78,9 +80,6 @@ export default ({
   .content h3{
     margin: 10px 0;
     font-size: 1.2rem;
-  }
-  .content .time{
-    font-size: 0.95rem;
   }
 
 
@@ -93,8 +92,8 @@ export default ({
     width: 700px;
   }
   img.photo{
-    width: 240px;
-    height: 160px;
+    min-width: 240px;
+    min-height: 160px;
   }
 }
 @media screen and (max-width: 768px) {
@@ -105,11 +104,11 @@ export default ({
     width: 530px;
   }
   img.photo{
-    width: 150px;
-    height: 110px;
+    min-width: 150px;
+    min-height: 110px;
   }
   h3.phone{
-    font-size: 1rem
+    font-size: 0.9rem
   }
 }
 @media screen and (max-width: 567px){
@@ -120,12 +119,12 @@ export default ({
     width: 90%;
   }
   img.photo{
-    width: 130px;
-    height: 100px;
+    min-width: 130px;
+    min-height: 100px;
   }
 }
 @media screen and (max-width: 420px){
-  .user-container .content .time {
+  .user-container .content .phone{
     display: none;
   }
 }

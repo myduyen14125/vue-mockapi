@@ -8,6 +8,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    alias: '/home',
     name: 'Home',
     component: Home
   },
@@ -34,7 +35,6 @@ const routes = [
     meta: { layout: 'unauth'}
   },
   {
-    //Match everything -> run when can't find these path above
     path: '*',
     component: () => import('../views/NotFound.vue'),
     meta: { layout: 'unauth'}

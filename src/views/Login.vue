@@ -2,11 +2,9 @@
   <div class="login-container">
     <h1>Welcome back!</h1>
     <p>Sign in to get the most out of nuntimum.</p>
-    <form action=""  v-on:submit.prevent="$router.push({
-      path: '/dashboard'
-    })">
-    <input type="text" placeholder="Username" required>
-    <input type="text" placeholder="Password" required>
+    <form action=""  v-on:submit.prevent="login()">
+    <input type="text" placeholder="Username" v-model="username" required>
+    <input type="password" placeholder="Password" v-model="password" required>
     <div class="more">
       <div class="remember-me">
         <input type="checkbox">
@@ -18,12 +16,47 @@
   </form>
   <div class="need-account">
     <p>Don't have an account? </p>
-    <router-link to="/signup">Sign up here</router-link>
+    <router-link to="/register">Sign up here</router-link>
   </div>
     
   </div>
     
 </template>
+
+<script>
+import axios from 'axios'
+export default ({
+  data() {
+    return {
+      username: '',
+      password: '',
+      user: {}      
+    }
+  },
+  methods: {
+    async login(){
+      try {
+        const response = await axios.get('https://60d94868eec56d001747768f.mockapi.io/v1/users?username=' + this.username);
+
+        response.data.forEach((user) => {
+          if (this.username == user.username && this.password == user.password) {
+            alert('Success Login')
+            this.$router.push('/user/' + user.id)
+            console.log(response.data)
+          }
+          else{
+            alert('Error hehe')
+          }
+        });
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+  }
+})
+</script>
+
 
 <style scoped>
 a{
