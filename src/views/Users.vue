@@ -4,7 +4,16 @@
     <h4>Want to become an user?
       <router-link to="/register">Click here</router-link>
     </h4>
-    <template v-for="user in users">
+    <button @click="undoChange">Cancel Find User</button>
+    <div class="search-bar">
+      <form action="" v-on:submit.prevent="findUsers">
+        <input type="text" v-model="findName" placeholder="Find the users you care about..."/>
+        <div class="fa fa-search"></div>
+      </form>
+    
+    </div>
+
+    <template v-for="user in users" >
       <div class="user-container" :key="'user-'+user.id" @click="getUser(user.id)">
         
         <img class="photo" :src="user.avatar" alt="#">
@@ -16,6 +25,18 @@
         </div>
       </div>
     </template>
+    <div v-for="listFindUser in listFindUsers"  :key="'listuser-'+listFindUser.id" @click="getUser(listFindUser.id)">
+      <div class="user-container">
+        
+        <img class="photo" :src="listFindUser.avatar" alt="#">
+        <div class="content">
+          <h2 style="margin-bottom: 2px">{{ listFindUser.name }}</h2>
+          <em class="username" style="margin-bottom: 15px; display: block">@{{ listFindUser.username }}</em>
+          <em class="" style="color: gray">Quote: {{ listFindUser.description }}</em>
+          <h4 class="phone">Phone number: {{ listFindUser.phoneNumber }}</h4>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -30,6 +51,8 @@ export default ({
   data() {
     return {
       users: 0,
+      notBeFound: false,
+      listFindUsers: []
     }
   },
   async created() {
@@ -41,6 +64,33 @@ export default ({
     getUser(id){
       this.$router.push(`/user/${id}`) 
     },
+    async findUsers(){
+      console.log(this.users)
+      let count = 0
+      const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
+      
+      for(let i = 0; i < response.data.length; i++){
+        if(response.data[i].username === this.findName){
+          this.listFindUsers[count] = response.data[i]
+          console.log(this.listFindUsers[count])
+          count++
+        }
+      }
+      if(count == 0 || this.findName === '') {
+        alert('There is no result!')
+      }
+      else {
+        this.users = 0
+      }
+      console.log('count = ' + count)
+      console.log(this.listFindUsers)
+      
+    },
+    async undoChange(){
+      const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
+      this.users = response.data
+      this.listFindUsers = null
+    }
   }
     
 })
@@ -82,6 +132,48 @@ export default ({
     font-size: 1.2rem;
   }
 
+/* Search-bar */
+.search-bar {
+  width: 600px;
+  margin: 20px auto;
+  position: relative;
+}
+input {
+  display: block;
+  padding: 15px;
+  border-radius: 15px;
+  color: #2c3e50;
+  width: 100%;
+  outline: none;
+  margin: 20px auto;
+  box-sizing: border-box;
+  transition: 0.4s;
+  border: 1px solid gray;
+  font-size: 1rem;
+}
+input:hover {
+  border: 1px solid #2c3e50;
+}
+.search-bar .fa {
+  position: absolute;
+  right: 20px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: gray;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.search-bar .fa:hover {
+  color: #2c3e50;
+}
+
+/* Dynamic CSS */
+.notBeFound{
+  display: none;
+}
 
 /* Responsive */
 @media screen and (max-width: 992px) {
