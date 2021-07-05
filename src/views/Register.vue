@@ -6,6 +6,9 @@
       <form action="" v-on:submit.prevent="postUser">
         <p style="text-align: left">* Create new account</p>
         <input type="text" placeholder="Username" required v-model="username" />
+        <span style="color: red" v-bind:class="{ nonExistedAcc }"
+          >This username has already existed !</span
+        >
         <input
           type="password"
           placeholder="Password"
@@ -58,6 +61,7 @@ export default {
       name: "",
       phoneNumber: "",
       strongPassword: true,
+      nonExistedAcc: true
     };
   },
   methods: {
@@ -76,11 +80,16 @@ export default {
       console.log("check = "+ check)
     },
     async checkAccount(){
-
+      const response = await axios.get('https://60d94868eec56d001747768f.mockapi.io/v1/users?username=' + this.username)
+      console.log(response.data.length)
+      if(response.data.length !== 0) {
+        this.nonExistedAcc = false
+      }
     },
     async postUser() {
-      this.validPassword();
-      if(this.strongPassword === true) {
+      await this.checkAccount();
+      await this.validPassword();
+      if(this.strongPassword === true && this.nonExistedAcc === true) {
         await axios.post('https://60d94868eec56d001747768f.mockapi.io/v1/users', {
           username: this.username,
           password: this.password,
@@ -92,7 +101,8 @@ export default {
         this.$router.push(`/users`)
       }
       else{
-        this.password = ''
+        // this.strongPassword = true
+        // this.nonExistedAcc = true
       }
     }
   },
@@ -182,6 +192,9 @@ input[type="checkbox"] {
 
 /* Dynamic css */
 .strongPassword {
+  display: none;
+}
+.nonExistedAcc {
   display: none;
 }
 
