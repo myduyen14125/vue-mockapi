@@ -63,6 +63,20 @@ a.router-link-exact-active {
   text-align: center;
   color: #2c3e50;
 }
+button{
+  margin-right: 15px;
+  background-color: white;
+  padding: 8px 15px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: 0.4s;
+  cursor: pointer;
+}
+button:hover{
+  background-color: #1e2731;
+  color: white;
+}
 
 /* Enter and leave animations can use different. 
 Transition for each slide in one component

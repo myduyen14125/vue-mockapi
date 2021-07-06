@@ -4,7 +4,9 @@
     <h4>Want to become an user?
       <router-link to="/register">Click here</router-link>
     </h4>
-    <button @click="undoChange">Cancel Find User</button>
+    
+    <button @click="cancelFindUser">Cancel Find Users</button>
+
     <div class="search-bar">
       <form action="" v-on:submit.prevent="findUsers">
         <input type="text" v-model="findName" placeholder="Find the users you care about..."/>
@@ -52,7 +54,8 @@ export default ({
     return {
       users: 0,
       notBeFound: false,
-      listFindUsers: []
+      listFindUsers: [],
+      tempUsers: [],
     }
   },
   async created() {
@@ -65,8 +68,10 @@ export default ({
       this.$router.push(`/user/${id}`) 
     },
     async findUsers(){
-      console.log(this.users)
+      this.tempUsers = this.users
+      console.log(this.tempUsers)
       let count = 0
+      this.listFindUsers = []
       const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
       
       for(let i = 0; i < response.data.length; i++){
@@ -80,16 +85,15 @@ export default ({
         alert('There is no result!')
       }
       else {
-        this.users = 0
+        this.users = {}
       }
       console.log('count = ' + count)
       console.log(this.listFindUsers)
       
     },
-    async undoChange(){
-      const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
-      this.users = response.data
-      this.listFindUsers = null
+    cancelFindUser(){
+      this.users = this.tempUsers
+      console.log(this.tempUsers)
     }
   }
     
