@@ -57,6 +57,11 @@ img {
   border-radius: 100%;
   margin: 20px 50px;
 }
+@media screen and (max-width: 992px) {
+  .author{
+    width: 600px;
+  }
+}
 @media screen and (max-width: 600px) {
   .box{
     flex-direction: column;

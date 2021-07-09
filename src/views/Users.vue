@@ -9,7 +9,7 @@
 
     <div class="search-bar">
       <form action="" v-on:submit.prevent="findUsers">
-        <input type="text" v-model="findName" placeholder="Find the users you care about..."/>
+        <input type="text" v-model="findName" placeholder="Find the user's name you want..."/>
         <div class="fa fa-search"></div>
       </form>
     
@@ -27,6 +27,8 @@
         </div>
       </div>
     </template>
+
+    
     <div v-for="listFindUser in listFindUsers"  :key="'listuser-'+listFindUser.id" @click="getUser(listFindUser.id)">
       <div class="user-container">
         
@@ -74,8 +76,15 @@ export default ({
       this.listFindUsers = []
       const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
       
+      // response.data.forEach.find((item) => {
+      //   item.name.includes(this.findName)
+      //   this.listFindUsers[count] = response.data[item]
+      //   console.log(this.listFindUsers[count])
+      //   count++
+      // })
+
       for(let i = 0; i < response.data.length; i++){
-        if(response.data[i].username === this.findName){
+        if(response.data[i].name.includes(this.findName)){
           this.listFindUsers[count] = response.data[i]
           console.log(this.listFindUsers[count])
           count++
