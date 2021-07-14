@@ -3,7 +3,7 @@
     <div class="register-container">
       <h1>Register</h1>
 
-      <form action="" v-on:submit.prevent="postUser">
+      <form action="" v-on:submit.prevent="addUser">
         <p style="text-align: left">* Create new account</p>
         <input type="text" placeholder="Username" required v-model="username" />
         <span style="color: red" v-bind:class="{ nonExistedAcc }"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from "axios";
+const faker = require("faker");
 export default {
   name: "Register",
   components: {},
@@ -61,52 +61,59 @@ export default {
       name: "",
       phoneNumber: "",
       strongPassword: true,
-      nonExistedAcc: true
+      nonExistedAcc: true,
     };
   },
+  computed: {
+    newUser() {
+      return {
+        createdAt: faker.date.recent(),
+        name: this.name,
+        avatar: faker.image.avatar(),
+        phoneNumber: this.phoneNumber,
+        information: faker.lorem.paragraph(),
+        username: this.username,
+        password: this.password,
+        description: faker.lorem.sentence(),
+        id: this.$store.state.maxID,
+      };
+    },
+  },
   methods: {
-    validPassword(){
+    validPassword() {
       let check = 0;
-      for(let i = 0; i < this.password.length; i++){
-        if(this.password[i] > '0' && this.password[i] < '9'){
+      for (let i = 0; i < this.password.length; i++) {
+        if (this.password[i] > "0" && this.password[i] < "9") {
           this.strongPassword = true;
-          console.log(this.strongPassword)
+          console.log(this.strongPassword);
           check = 1;
         }
       }
-      if(check === 0){
+      if (check === 0) {
         this.strongPassword = false;
-      } 
-      console.log("check = "+ check)
+      }
+      console.log("check = " + check);
     },
-    async checkAccount(){
-      const response = await axios.get('https://60d94868eec56d001747768f.mockapi.io/v1/users?username=' + this.username)
-      console.log(response.data.length)
-      if(response.data.length !== 0) {
-        this.nonExistedAcc = false
+    checkAccount() {
+      let response = "hehe";
+      if (response.length === 0) {
+        this.nonExistedAcc = false;
       }
     },
-    async postUser() {
-      await this.checkAccount();
-      await this.validPassword();
-      if(this.strongPassword === true && this.nonExistedAcc === true) {
-        await axios.post('https://60d94868eec56d001747768f.mockapi.io/v1/users', {
-          username: this.username,
-          password: this.password,
-          name: this.name,
-          phoneNumber: this.phoneNumber,
-          
-        });
-        alert('You have successfully registered !')
-        this.$router.push(`/users`)
-      }
-      else{
+    addUser() {
+      this.checkAccount();
+      this.validPassword();
+      if (this.strongPassword === true && this.nonExistedAcc === true) {
+        this.$store.commit("addUser", this.newUser);
+
+        alert("You have successfully registered !");
+        this.$router.push(`/users`);
+      } else {
         // this.strongPassword = true
         // this.nonExistedAcc = true
       }
-    }
+    },
   },
-  
 };
 </script>
 

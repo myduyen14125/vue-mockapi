@@ -171,7 +171,7 @@ button:hover{
 }
 .edit-profile{
   position: absolute;
-  top: 83%;
+  top: 87%;
   right: calc(50% - 230px /2);
   width: 230px;
   padding: 0;

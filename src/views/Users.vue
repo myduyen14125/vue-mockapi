@@ -4,8 +4,6 @@
     <h4>Want to become an user?
       <router-link to="/register">Click here</router-link>
     </h4>
-    
-    <button @click="cancelFindUser">Cancel Find Users</button>
 
     <div class="search-bar">
       <form action="" v-on:submit.prevent="findUsers">
@@ -15,7 +13,7 @@
     
     </div>
 
-    <template v-for="user in users" >
+    <template v-for="user in findUsers" >
       <div class="user-container" :key="'user-'+user.id" @click="getUser(user.id)">
         
         <img class="photo" :src="user.avatar" alt="#">
@@ -28,25 +26,10 @@
       </div>
     </template>
 
-    
-    <div v-for="listFindUser in listFindUsers"  :key="'listuser-'+listFindUser.id" @click="getUser(listFindUser.id)">
-      <div class="user-container">
-        
-        <img class="photo" :src="listFindUser.avatar" alt="#">
-        <div class="content">
-          <h2 style="margin-bottom: 2px">{{ listFindUser.name }}</h2>
-          <em class="username" style="margin-bottom: 15px; display: block">@{{ listFindUser.username }}</em>
-          <em class="" style="color: gray">Quote: {{ listFindUser.description }}</em>
-          <h4 class="phone">Phone number: {{ listFindUser.phoneNumber }}</h4>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default ({
   name: 'users',
   components: {
@@ -54,56 +37,26 @@ export default ({
   },
   data() {
     return {
-      users: 0,
-      notBeFound: false,
-      listFindUsers: [],
-      tempUsers: [],
+      findName: '',
     }
   },
-  async created() {
-    const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
-    this.users = response.data
-    console.log(response.data)
+  computed: {
+    users() {
+      return this.$store.state.users;
+    },
+    findUsers(){
+      return this.users.filter((user) => {
+        return (
+          user.name.toLowerCase().includes(this.findName.toLowerCase())
+        );
+      });
+    }
   },
   methods: {
     getUser(id){
       this.$router.push(`/user/${id}`) 
     },
-    async findUsers(){
-      this.tempUsers = this.users
-      console.log(this.tempUsers)
-      let count = 0
-      this.listFindUsers = []
-      const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users`)
-      
-      // response.data.forEach.find((item) => {
-      //   item.name.includes(this.findName)
-      //   this.listFindUsers[count] = response.data[item]
-      //   console.log(this.listFindUsers[count])
-      //   count++
-      // })
-
-      for(let i = 0; i < response.data.length; i++){
-        if(response.data[i].name.includes(this.findName)){
-          this.listFindUsers[count] = response.data[i]
-          console.log(this.listFindUsers[count])
-          count++
-        }
-      }
-      if(count == 0 || this.findName === '') {
-        alert('There is no result!')
-      }
-      else {
-        this.users = {}
-      }
-      console.log('count = ' + count)
-      console.log(this.listFindUsers)
-      
-    },
-    cancelFindUser(){
-      this.users = this.tempUsers
-      console.log(this.tempUsers)
-    }
+    
   }
     
 })
@@ -134,7 +87,7 @@ export default ({
   box-shadow: 5px 8px 10px -5px rgba(0,0,0,0.71);
 }
   img.photo{
-    min-width: 250px;
+    min-width: 180px;
     min-height: 180px;
     object-fit: cover;
   }
