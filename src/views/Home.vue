@@ -3,13 +3,9 @@
     
     <h1>Home Page<span></span></h1>
     <div class="content">
-      <h3>This is a todo app with these functions:</h3>
-      <ul>
-        <li>Get users data from backend, created by mockAPI, source: <a href="https://60d94868eec56d001747768f.mockapi.io/v1/users"> Right here</a></li>
-        <li>Post data users registering with name and phone number, then Fake data of avatar...</li>
-        <li>Edit data -  user's profile (only name and phone number)</li>
-        <li>Delete users</li>
-      </ul>
+      <h3>.... A litle thinking about what happens in homepage :3<br>
+      </h3>
+      
     </div>
     
   </div>
