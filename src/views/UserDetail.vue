@@ -48,6 +48,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       currentInput: null,
       edit: '',
       availableModal: false,
@@ -55,10 +56,10 @@ export default {
     }
     
   },
-  computed: {
-    user() {
-      return this.$store.state.users.filter(item => {item.id != this.$route.params.id})
-    }
+  async created() {
+    const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${this.$route.params.id}`)
+    this.user = response.data
+    console.log(response)
   },
   methods: {
     editProfile(){

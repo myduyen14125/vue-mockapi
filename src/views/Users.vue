@@ -13,7 +13,7 @@
     
     </div>
 
-    <template v-for="user in users" >
+    <template v-for="user in findUsers" >
       <div class="user-container" :key="'user-'+user.id" @click="getUser(user.id)">
         
         <img class="photo" :src="user.avatar" alt="#">
