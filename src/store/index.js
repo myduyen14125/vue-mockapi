@@ -86,14 +86,6 @@ export default new Vuex.Store({
     ]
   },
   getters: {
-    findUsers(state) {
-      var foundUsers = state.users.map(user => {
-        return {
-          name: '**' + user.name
-        }
-      });
-      return foundUsers;
-    },
     totalUsers(state) {
       return state.users.length;
     },
@@ -109,7 +101,7 @@ export default new Vuex.Store({
       state.users.filter(item => {item.id != user.id})
     }, 
     edituser(){
-      
+
     }
 
   }
