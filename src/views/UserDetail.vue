@@ -8,7 +8,7 @@
         <div class="menu-edit" v-bind:class="{showMenuEdit: availableMenuEdit}">
           <button @click="editName">Edit Your Name</button>
           <button @click="editPhone">Edit Phone Number</button>
-          <button @click="deleteUser(user.id)">Delete Account</button>
+          <button @click="deleteUser()">Delete Account</button>
           <hr style="margin: 1px">
           <button @click="cancelEdit">Cancel</button>
         </div>
@@ -48,7 +48,6 @@ export default {
   },
   data() {
     return {
-      user: {},
       currentInput: null,
       edit: '',
       availableModal: false,
@@ -56,10 +55,10 @@ export default {
     }
     
   },
-  async created() {
-    const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${this.$route.params.id}`)
-    this.user = response.data
-    console.log(response)
+  computed: {
+    user() {
+      return this.$store.state.users.filter(item => {item.id != this.$route.params.id})
+    }
   },
   methods: {
     editProfile(){
@@ -115,18 +114,9 @@ export default {
     cancelModal(){
       this.availableModal = false
     },
-    async deleteUser(id){
-      await axios
-      .delete(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
-      .then(function(response){
-        alert('You decide to delete!')
-        console.log(response)
-        console.log('Success')
-      })
-      .catch(function (error) {
-        console.log(error)
-        alert('Error !')
-      });
+    deleteUser(){
+      this.$store.commit('deleteUser', this.user)
+      alert('Success !')
       this.$router.push(`/users`);
     }
   }
