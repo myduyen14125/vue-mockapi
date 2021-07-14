@@ -47,28 +47,22 @@ export default {
   },
   data() {
     return {
-      user: {},
       currentInput: null,
       edit: '',
       availableModal: false,
-      availableMenuEdit: false
+      availableMenuEdit: false,
     }
     
   },
-  async created() {
-    const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${this.$route.params.id}`)
-    this.user = response.data
-    console.log(response)
+  computed: {
+    user() {
+      let activeUser = {};
+      this.$store.state.users.forEach((user) => {
+        if (user.id == this.$route.params.id) activeUser = user;
+      });
+      return activeUser;
+    },
   },
-  // computed: {
-  //   user() {
-  //     let activeUser = {};
-  //     this.$store.state.persons.forEach((user) => {
-  //       if (user.id == this.$route.params.id) activeUser = user;
-  //     });
-  //     return activeUser;
-  //   },
-  // },
   methods: {
     editProfile(){
       this.availableMenuEdit = true
