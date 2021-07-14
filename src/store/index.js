@@ -99,10 +99,7 @@ export default new Vuex.Store({
     },
     deleteUser(state, user){
       state.users.filter(item => {item.id != user.id})
-    }, 
-    edituser(){
-
-    }
+    },
 
   }
 })
