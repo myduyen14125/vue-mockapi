@@ -105,6 +105,12 @@ export default new Vuex.Store({
     addUser(state, user){
       state.users.push(user)
     },
+    deleteUser(state, user){
+      state.users.filter(item => {item.id != user.id})
+    }, 
+    edituser(){
+      
+    }
 
   }
 })
