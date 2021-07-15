@@ -12,7 +12,6 @@
         <h5>* Phone number: {{ user.phoneNumber }}</h5>
       </div>
     </div>
-    //hehe in master
   </div>
 </template>
 

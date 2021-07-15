@@ -3,9 +3,16 @@
     
     <h1>Home Page<span></span></h1>
     <div class="content">
-      <h3>.... A litle thinking about what happens in homepage :3<br>
+      <h3>Welcome to our platform !<br>
+      This is a small todo app with vuex.
+      With some functions: 
       </h3>
-      
+      <ul>
+        <li><router-link to="/register">Register</router-link> to add members </li>
+        <li>Edit user's profile</li>
+        <li>Delete users</li>
+      </ul>
+      <h3></h3>
     </div>
     
   </div>

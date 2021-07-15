@@ -3,11 +3,11 @@
     <div class="cover">
       <Author v-bind:user='user'/>
       <div class="edit-profile">
-        <button class="big-edit" @click="editProfile">Edit Profile</button>
+        <button class="big-edit" @click="showModelEdit">Edit Profile</button>
         <div class="menu-edit" v-bind:class="{showMenuEdit: availableMenuEdit}">
           <button @click="editName">Edit Your Name</button>
           <button @click="editPhone">Edit Phone Number</button>
-          <button @click="deleteUser()">Delete Account</button>
+          <button @click="deleteUser">Delete Account</button>
           <hr style="margin: 1px">
           <button @click="cancelEdit">Cancel</button>
         </div>
@@ -17,7 +17,7 @@
         <div class="modal-content">
           <h3>Edit your information below here !</h3>
           <hr>
-          <form action=""  v-on:submit.prevent="successEdit(user.id)">
+          <form action=""  v-on:submit.prevent="updateEdit">
             <input v-model="currentInput" type="text" required>
             <button type="submit">Submit</button>
             <button @click="cancelModal">Cancel</button>
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Author from '../components/uncommon/Author.vue'
 
 export default {
@@ -56,15 +55,11 @@ export default {
   },
   computed: {
     user() {
-      let activeUser = {};
-      this.$store.state.users.forEach((user) => {
-        if (user.id == this.$route.params.id) activeUser = user;
-      });
-      return activeUser;
+      return this.$store.state.users.filter((user) => user.id == this.$route.params.id)[0];
     },
   },
   methods: {
-    editProfile(){
+    showModelEdit(){
       this.availableMenuEdit = true
     },
     editName(){
@@ -77,36 +72,14 @@ export default {
       this.availableModal = true
       this.availableMenuEdit = false
     },
-    async successEdit(id){
+    updateEdit(){
       if(this.edit === 'name'){
-        await axios
-        .put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
-          {
-            name: this.currentInput,
-          })
-        .then(function (response){
-          alert('Success Updated!')
-          // const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
-          // location.reload();
-          console.log(response)
-          console.log(response.data)
-        })
-        .catch(function (error){
-          console.log(error)
-          alert('Error !')
-        })
-        const response = await axios.get(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`)
-        console.log(response.data)
-        this.user = response.data
+        this.user.name = this.currentInput;
+        alert('Hehe, your name has successfully been updated!')
       }
       if(this.edit === 'phone'){
-        await axios.put(`https://60d94868eec56d001747768f.mockapi.io/v1/users/${id}`,
-        {
-          phoneNumber: this.currentInput,
-        })
-        alert('Success Updated!')
-        this.user.phoneNumber = this.currentInput
-        //Another way for a faster user experience
+        this.user.phoneNumber = this.currentInput;
+        alert('Hehe, your phone has successfully been updated!')
       }
       this.currentInput = ''
       this.availableModal = false
@@ -118,7 +91,7 @@ export default {
       this.availableModal = false
     },
     deleteUser(){
-      this.$store.commit('deleteUser', this.user)
+      this.$store.commit("deleteUser", this.user)
       alert('Success !')
       this.$router.push(`/users`);
     }
@@ -164,7 +137,7 @@ button:hover{
 }
 .edit-profile{
   position: absolute;
-  top: 87%;
+  top: 83%;
   right: calc(50% - 230px /2);
   width: 230px;
   padding: 0;

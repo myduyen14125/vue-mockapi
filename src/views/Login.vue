@@ -24,34 +24,29 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default ({
   data() {
     return {
       username: '',
-      password: '',
-      user: {}      
+      password: '',     
     }
   },
+  computed: {
+    user() {
+      return this.$store.state.users.filter((user) => user.username == this.username)[0];
+    },
+  },
   methods: {
-    async login(){
-      try {
-        const response = await axios.get('https://60d94868eec56d001747768f.mockapi.io/v1/users?username=' + this.username);
-
-        response.data.forEach((user) => {
-          if (this.username == user.username && this.password == user.password) {
-            alert('Success Login')
-            this.$router.push('/user/' + user.id)
-            console.log(response.data)
-          }
-          else{
-            alert('Error hehe')
-          }
-        });
-      }
-      catch(error){
-        console.log(error)
-      }
+    login(){
+      return this.users.filter((user) => {
+        if(user.username == this.username && user.password == this.password){
+          alert('Success Login !')
+          return this.$router.push('/user/' + user.id);
+        } 
+        else {
+          alert('Please check your username or email')
+        }
+      });
     }
   }
 })

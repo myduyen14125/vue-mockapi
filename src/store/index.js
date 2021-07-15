@@ -98,7 +98,9 @@ export default new Vuex.Store({
       state.users.push(user)
     },
     deleteUser(state, user){
-      state.users.filter(item => {item.id != user.id})
+      // state.users.filter((item) => {item.id != user.id});
+      let index = state.users.indexOf(user)
+      state.users.splice(index, 1)
     },
 
   }

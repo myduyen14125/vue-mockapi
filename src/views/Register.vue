@@ -23,8 +23,9 @@
         <p style="text-align: left">* Personal information</p>
         <input type="text" placeholder="Fullname" required v-model="name" />
         <input
-          type="text"
+          type="number"
           placeholder="Phone Number"
+          maxlength="11"
           required
           v-model="phoneNumber"
         />
