@@ -33,15 +33,15 @@ export default ({
   },
   computed: {
     user() {
-      return this.$store.state.users.filter((user) => user.username == this.username)[0];
+      return this.$store.state.users.filter((user) =>  user.username == this.username)[0];
     },
   },
   methods: {
     login(){
-      return this.users.filter((user) => {
+      return this.$store.state.users.filter((user) => {
         if(user.username == this.username && user.password == this.password){
           alert('Success Login !')
-          return this.$router.push('/user/' + user.id);
+          return this.$router.push('/user/' + this.user.id);
         } 
         else {
           alert('Please check your username or email')

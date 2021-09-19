@@ -81,6 +81,7 @@ export default {
     },
   },
   methods: {
+    hashPassword(){},
     validPassword() {
       let check = 0;
       for (let i = 0; i < this.password.length; i++) {
@@ -96,10 +97,10 @@ export default {
       console.log("check = " + check);
     },
     checkAccount() {
-      let response = "hehe";
-      if (response.length === 0) {
-        this.nonExistedAcc = false;
-      }
+      this.$store.state.users.filter((user) => {
+        if(user.username == this.username) return this.nonExistedAcc = false;
+        else {return this.nonExistedAcc = true}
+      })
     },
     addUser() {
       this.checkAccount();
