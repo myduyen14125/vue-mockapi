@@ -25,6 +25,9 @@ yarn build
 ```
 yarn lint
 ```
+### Deploys
+<!-- https://zealous-lalande-1cab85.netlify.app/-->
+
 ### Ideas requirement:
 From: La Hoang Long
 
